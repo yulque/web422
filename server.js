@@ -1,14 +1,21 @@
+/*********************************************************************************
+ * WEB422 – Assignment 1
+ * I declare that this assignment is my own work in accordance with Seneca Academic Policy.
+ * No part of this assignment has been copied manually or electronically from any other source
+ * (including web sites) or distributed to other students.
+ *
+ * Name: Yu Ri Yoon / Student ID: 135023190 / Date: 22 Jan 2021
+ * Heroku Link: http://yurisweb422.herokuapp.com/
+ *
+ ********************************************************************************/
+
 const express = require("express");
 const path = require("path");
 const bodyParser = require("body-parser");
 const app = express();
-
 require("dotenv").config();
-//const process = require("process");
 const HTTP_PORT = process.env.PORT || 8080;
 const cors = require("cors");
-
-//const { MONGODB_CONN_STRING } = process.env;
 const RestaurantDB = require("./modules/restaurantDB.js");
 const db = new RestaurantDB(process.env.MONGODB_CONN_STRING);
 
