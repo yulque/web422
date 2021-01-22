@@ -2,20 +2,15 @@ const express = require("express");
 const path = require("path");
 const bodyParser = require("body-parser");
 const app = express();
-const process = require("process");
+
+require("dotenv").config();
+//const process = require("process");
 const HTTP_PORT = process.env.PORT || 8080;
 const cors = require("cors");
-const restaurantDB = require("./modules/restaurantDB");
 
-const mongo = require("mongodb").MongoClient;
-const { MongoClient } = require("mongodb");
+//const { MONGODB_CONN_STRING } = process.env;
 const RestaurantDB = require("./modules/restaurantDB.js");
-const Mongoose = require("mongoose");
-const { StringDecoder } = require("string_decoder");
-const Schema = Mongoose.Schema;
-const db = new RestaurantDB(
-  "mongodb+srv://yulque:db0024fl@cluster0.falxp.mongodb.net/sample_restaurants?retryWrites=true&w=majority"
-);
+const db = new RestaurantDB(process.env.MONGODB_CONN_STRING);
 
 app.use(cors());
 app.use(bodyParser.json());
@@ -30,20 +25,28 @@ db.initialize()
       console.log(`server listening on:: ${HTTP_PORT}`);
     });
   })
-  .catch((err) => console.log(err));
+  .catch((err) => {
+    console.log(err);
+    res.status(500);
+  });
 
-// get all
+// Get all restaurants
 app.get("/api/restaurants", (req, res) => {
-  console.log(req.params.page);
   db.getAllRestaurants(req.query.page, req.query.perPage, req.query.borough)
     .then((data) => {
+      // Show data received
       console.log(data);
-      res.status(200).json({ message: `fetch requested restaurants` });
+      res
+        .status(200)
+        .json({ message: `fetch requested restaurants`, info: data });
     })
-    .catch((err) => console.log(err));
+    .catch((err) => {
+      console.log(err);
+      res.status(500);
+    });
 });
 
-// get one
+// Get one restaurant
 app.get("/api/restaurants/:id", (req, res) => {
   db.getRestaurantById(req.params.id)
     .then((data) => {
@@ -54,10 +57,11 @@ app.get("/api/restaurants/:id", (req, res) => {
     })
     .catch((err) => {
       console.log(err);
+      res.status(500);
     });
 });
 
-// add new
+// Add new restaurant
 app.post("/api/restaurants", (req, res) => {
   // must return http 201
   db.addNewRestaurant(req.body)
@@ -65,20 +69,32 @@ app.post("/api/restaurants", (req, res) => {
       console.log(data);
       res
         .status(201)
-        .json({ message: `added a new restaurant: ${req.body.name}` });
+        .json({ message: `Added a new restaurant: ${req.body.name}` });
     })
-    .catch((err) => console.log(err));
+    .catch((err) => {
+      console.log(err);
+      res
+        .status(500)
+        .json({ message: `Failed to add a new restaurant: ${req.body.name}` });
+    });
 });
 
-// edit existing
+// Edit existing restaurant
 app.put("/api/restaurants/:id", (req, res) => {
   // this route expects a JSON object in the body like id, name
   db.updateRestaurantById(req.body, req.params.id)
     .then((data) => {
       console.log(data);
-      res.json({ message: `updated item with id: ${req.params.id} to db` });
+      res
+        .status(204)
+        .json({ message: `Updated item with id: ${req.params.id} to db` });
     })
-    .catch((err) => console.log(err));
+    .catch((err) => {
+      console.log(err);
+      res
+        .status(500)
+        .json({ message: `Failed to update item with id: ${req.params.id}` });
+    });
 });
 
 // delete restaurant
@@ -90,7 +106,12 @@ app.delete("api/restaurants/:id", (req, res) => {
         .status(200)
         .json({ message: `deleted restaurant with id ${req.params.id}` });
     })
-    .catch((err) => console.log(err));
+    .catch((err) => {
+      console.log(err);
+      res.status(500).json({
+        message: `Failed to delete restaurant with id ${req.params.id}`,
+      });
+    });
 });
 
 // resource not found
