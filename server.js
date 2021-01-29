@@ -19,6 +19,9 @@ const cors = require("cors");
 const RestaurantDB = require("./modules/restaurantDB.js");
 const db = new RestaurantDB(process.env.MONGODB_CONN_STRING);
 
+app.use(express.static("js"));
+app.use(express.static("css"));
+
 app.use(cors());
 app.use(bodyParser.json());
 
@@ -43,9 +46,7 @@ app.get("/api/restaurants", (req, res) => {
     .then((data) => {
       // Show data received
       console.log(data);
-      res
-        .status(200)
-        .json({ message: `fetch requested restaurants`, info: data });
+      res.status(200).json({ message: `fetch requested restaurants` });
     })
     .catch((err) => {
       console.log(err);
