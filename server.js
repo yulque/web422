@@ -14,6 +14,7 @@ const path = require("path");
 const bodyParser = require("body-parser");
 const app = express();
 require("dotenv").config();
+const process = require("process");
 const HTTP_PORT = process.env.PORT || 8080;
 const cors = require("cors");
 const RestaurantDB = require("./modules/restaurantDB.js");
@@ -21,10 +22,6 @@ const db = new RestaurantDB(process.env.MONGODB_CONN_STRING);
 
 app.use(cors());
 app.use(bodyParser.json());
-
-app.get("/", (req, res) => {
-  res.sendFile(path.join(__dirname, "/index.html"));
-});
 
 db.initialize()
   .then(() => {
@@ -37,15 +34,19 @@ db.initialize()
     res.status(500);
   });
 
-// Get all restaurants
+app.get("/", (req, res) => {
+  if (req.accepts("html") == "html") {
+    res.sendFile(path.join(__dirname, "/index.html"));
+  } else if (req.accepts("json") == "json") {
+    res.json({ message: "API Listening" });
+  }
+});
+
+//Get all restaurants
 app.get("/api/restaurants", (req, res) => {
   db.getAllRestaurants(req.query.page, req.query.perPage, req.query.borough)
     .then((data) => {
-      // Show data received
-      console.log(data);
-      res
-        .status(200)
-        .json({ message: `fetch requested restaurants`, info: data });
+      res.status(200).json(data);
     })
     .catch((err) => {
       console.log(err);
@@ -57,10 +58,7 @@ app.get("/api/restaurants", (req, res) => {
 app.get("/api/restaurants/:id", (req, res) => {
   db.getRestaurantById(req.params.id)
     .then((data) => {
-      res.status(200).json({
-        message: `get restaurant with identifier: ${req.params.id}`,
-        info: data,
-      });
+      res.status(200).json(data);
     })
     .catch((err) => {
       console.log(err);
@@ -73,10 +71,7 @@ app.post("/api/restaurants", (req, res) => {
   // must return http 201
   db.addNewRestaurant(req.body)
     .then((data) => {
-      console.log(data);
-      res
-        .status(201)
-        .json({ message: `Added a new restaurant: ${req.body.name}` });
+      res.status(201).json({ message: data });
     })
     .catch((err) => {
       console.log(err);
@@ -91,10 +86,7 @@ app.put("/api/restaurants/:id", (req, res) => {
   // this route expects a JSON object in the body like id, name
   db.updateRestaurantById(req.body, req.params.id)
     .then((data) => {
-      console.log(data);
-      res
-        .status(204)
-        .json({ message: `Updated item with id: ${req.params.id} to db` });
+      res.status(204).json({ message: data });
     })
     .catch((err) => {
       console.log(err);
@@ -108,10 +100,7 @@ app.put("/api/restaurants/:id", (req, res) => {
 app.delete("api/restaurants/:id", (req, res) => {
   db.deleteRestaurantById(req.params.id)
     .then((data) => {
-      console.log(data);
-      res
-        .status(200)
-        .json({ message: `deleted restaurant with id ${req.params.id}` });
+      res.status(200).json({ message: data });
     })
     .catch((err) => {
       console.log(err);
