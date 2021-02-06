@@ -20,21 +20,17 @@ function avg(grades) {
   const avg = score.reduce((a, b) => a + b, 0) / grades.length;
   return avg.toFixed(2);
 }
-
-// <% to execute javascript ->
-// <%= to create a compiled template -> simply get the value from object
-// <%- to escape data property values -> unlock everything and show the return
 const tableRows = _.template(
   `<% _.forEach(obj, function(elem){ %>
-<tr data-id=<%= elem._id %>>
-<td><%= elem.name %></td>
-<td><%= elem.cuisine %></td>
-<td><%= elem.address.building %> <%= elem.address.street %></td>
-<td><%- avg(elem.grades) %></td>
-</tr>
-<% }) %>`
+  <tr data-id=<%= elem._id %>>
+  <td><%= elem.name %></td>
+  <td><%= elem.cuisine %></td>
+  <td><%= elem.address.building %> <%= elem.address.street %></td>
+  <td><%- avg(elem.grades) %></td>
+  </tr>
+  <% }) %>`,
+  { imports: { avg: avg } }
 );
-
 function loadRestaurantData() {
   fetch(
     `https://yurisweb422.herokuapp.com/api/restaurants?page=${page}&perPage=${perPage}`
@@ -42,7 +38,7 @@ function loadRestaurantData() {
     .then((response) => response.json())
     .then((json) => {
       // set the global array to be the data
-      restaurantData = json.info;
+      restaurantData = json;
       const templated = tableRows(restaurantData);
       $("tbody").html(templated);
       $("#current-page").html(page);
