@@ -4,7 +4,8 @@
   "description": "",
   "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "stop" : "node server.stop.js"
   },
   "author": "",
   "license": "ISC",
@@ -14,9 +15,12 @@
     "cors": "^2.8.5",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
+<<<<<<< HEAD
     "jquery": "^3.5.1",
     "leaflet": "^1.7.1",
     "lodash": "^4.17.20",
+=======
+>>>>>>> 05a5c13099c3ab03e7334bf92a4662b54453ac2f
     "mongoose": "^5.11.13"
   }
 }
