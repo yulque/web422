@@ -7,3 +7,15 @@
 .cardRestaurantList {
   margin-top: 10px;
 }
+.listName {
+  min-width: 300px;
+}
+.listAddress {
+  min-width: 250px;
+}
+.listBorough {
+  min-width: 120px;
+}
+.listCuisine {
+  min-width: 300px;
+}

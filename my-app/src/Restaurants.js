@@ -37,26 +37,43 @@ export default function Restaurants(props) {
           Full list of restaurants you searched
         </Card.Header>
       </Card>
-      <ListGroup>
-        {
-          restaurants ? (
-            restaurants.map((res) => (
-              <ListGroup.Item key={res._id}>
-                {res.name +
-                  res.borough +
-                  res.address.building +
-                  res.address.street +
-                  res.cuisine}
-              </ListGroup.Item>
-            ))
-          ) : (
-            <ListGroup.Item value="l"></ListGroup.Item>
-          )
-          // restaurants.map((restaurant) => {
-          //   <ListGroup.Item value={restaurant.id}></ListGroup.Item>;
-          // });}
-        }
+      <ListGroup horizontal>
+        <ListGroup.Item className="listName" variant="dark">
+          Name
+        </ListGroup.Item>
+        <ListGroup.Item className="listAddress" variant="dark">
+          Address
+        </ListGroup.Item>
+        <ListGroup.Item className="listBorough" variant="dark">
+          Borough
+        </ListGroup.Item>
+        <ListGroup.Item className="listCuisine" variant="dark">
+          Cuisine
+        </ListGroup.Item>
       </ListGroup>
+
+      {restaurants ? (
+        restaurants.length == 0 ? (
+          <ListGroup.Item>No Found</ListGroup.Item>
+        ) : (
+          restaurants.map((res) => (
+            <ListGroup horizontal key={res._id}>
+              <ListGroup.Item className="listName">{res.name}</ListGroup.Item>
+              <ListGroup.Item className="listAddress">
+                {res.address.building + " " + res.address.street}
+              </ListGroup.Item>
+              <ListGroup.Item className="listBorough">
+                {res.borough}
+              </ListGroup.Item>
+              <ListGroup.Item className="listCuisine">
+                {res.cuisine}
+              </ListGroup.Item>
+            </ListGroup>
+          ))
+        )
+      ) : (
+        <ListGroup.Item>Loading Restaurants...</ListGroup.Item>
+      )}
     </>
   );
 }

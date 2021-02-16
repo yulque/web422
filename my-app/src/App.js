@@ -66,9 +66,10 @@ function App() {
               <Route exact path="/about">
                 <About />
               </Route>
-              <Route path="/Restaurant/:id">
-                <Restaurant />
-              </Route>
+              <Route
+                path="/Restaurant/:id"
+                render={(props) => <Restaurant id={props.match.params.id} />}
+              ></Route>
               {/* <Route
                 path="/Restaurant/:id"
                 render={(props) => {
