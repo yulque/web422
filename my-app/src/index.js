@@ -1,3 +1,14 @@
+/*********************************************************************************
+ *  WEB422 – Assignment 3
+ *  I declare that this assignment is my own work in accordance with Seneca Academic Policy.
+ *  No part of this assignment has been copied manually or electronically from any other source
+ *  (including web sites) or distributed to other students.
+ *
+ *  Name: Yu Ri Yoon_ Student ID: 135023190_ Date: Feb/16/2021_
+ *
+ *
+ ********************************************************************************/
+
 import React from "react";
 import ReactDOM from "react-dom";
 import { BrowserRouter } from "react-router-dom";

@@ -2,20 +2,48 @@
   width: 500px;
   margin-left: auto;
   margin-right: auto;
+  margin-top: 20px;
+  margin-bottom: 20px;
 }
 
-.cardRestaurantList {
+.restaurantListHeader {
   margin-top: 10px;
+  margin-bottom: 10px;
+  margin-left: auto;
+  margin-right: auto;
+  width: 950px;
+  padding: 0;
+}
+.restaurantList {
+  margin-left: auto;
+  margin-right: auto;
 }
 .listName {
   min-width: 300px;
+  max-width: 300px;
+  margin-left: auto;
 }
 .listAddress {
   min-width: 250px;
+  max-width: 250px;
 }
 .listBorough {
-  min-width: 120px;
+  min-width: 150px;
+  max-width: 150px;
 }
 .listCuisine {
-  min-width: 300px;
+  min-width: 260px;
+  max-width: 260px;
+  margin-right: auto;
+}
+.grade {
+  font-size: 12px;
+  text-align: center;
+  padding: 10px;
+}
+.pagination {
+  width: 30px;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 20px;
 }
