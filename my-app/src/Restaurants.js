@@ -18,7 +18,7 @@ export default function Restaurants(props) {
   console.log(borough);
   useEffect(() => {
     fetch(
-      `http://yurisweb422.herokuapp.com/api/restaurants?page=${page}&perPage=${perPage}${borough}`
+      `https://yurisweb422.herokuapp.com/api/restaurants?page=${page}&perPage=${perPage}${borough}`
     )
       .then((res) => {
         return res.json();

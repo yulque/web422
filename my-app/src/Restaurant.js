@@ -10,7 +10,7 @@ export default function Restaurant(props) {
 
   useEffect(() => {
     setLoading(true);
-    fetch(`http://yurisweb422.herokuapp.com/api/restaurants/${props.id}`)
+    fetch(`https://yurisweb422.herokuapp.com/api/restaurants/${props.id}`)
       .then((res) => {
         console.log("res is ", res);
         return res.json();
