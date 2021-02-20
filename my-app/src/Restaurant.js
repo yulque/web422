@@ -2,7 +2,7 @@ import { propTypes } from "react-bootstrap/esm/Image";
 import { useParams } from "react-router-dom";
 import { MapContainer, TileLayer, Marker } from "react-leaflet";
 import { useEffect, useState } from "react";
-import { Card, CardDeck } from "react-bootstrap";
+import { Card, CardDeck, Spinner } from "react-bootstrap";
 
 export default function Restaurant(props) {
   const [restaurant, setRestaurant] = useState(null);
@@ -29,19 +29,32 @@ export default function Restaurant(props) {
       });
   }, []);
 
-  if (loading) return <Card>Loading Restaurant Data...</Card>;
+  if (loading)
+    return (
+      <Card class="card border-info mb-3 text-center">
+        <Card.Body>
+          {" "}
+          <Spinner animation="border" variant="info" />
+          Loading your restaurant...
+        </Card.Body>
+      </Card>
+    );
 
-  if (restaurant == null) return <Card>Not found</Card>;
+  if (restaurant == null)
+    return (
+      <Card class="card border-info mb-3">
+        <Card.Body>Unable to find Restaurant with id: {props.id}</Card.Body>
+      </Card>
+    );
 
   return (
     <>
-      <Card className="About">
+      <Card className="RestaurantInfo">
         <Card.Body>
           <Card.Title>
             <h3>{restaurant.name}</h3>
             <p>
-              {restaurant.address.building}
-              {restaurant.address.street}
+              {restaurant.address.building + " " + restaurant.address.street}
             </p>
           </Card.Title>
           <MapContainer
@@ -60,7 +73,7 @@ export default function Restaurant(props) {
           </MapContainer>
         </Card.Body>
       </Card>
-      <CardDeck>
+      <CardDeck className="RestaurantGrade">
         {restaurant.grades.map((grade) => {
           console.log(grade);
           return (

@@ -5,7 +5,15 @@
   margin-top: 20px;
   margin-bottom: 20px;
 }
-
+.RestaurantInfo {
+  margin: 10px;
+}
+.RestaurantInfo p {
+  font-size: 15px;
+}
+.RestaurantGrade {
+  margin: 10px;
+}
 .restaurantListHeader {
   margin-top: 10px;
   margin-bottom: 10px;

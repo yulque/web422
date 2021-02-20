@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useHistory } from "react-router-dom";
 import queryString from "query-string";
-import { Card, ListGroup, Pagination } from "react-bootstrap";
+import { Card, ListGroup, Pagination, Spinner } from "react-bootstrap";
 
 export default function Restaurants(props) {
   const perPage = 10;
@@ -10,7 +10,12 @@ export default function Restaurants(props) {
   let history = useHistory();
 
   const parsed = queryString.parse(props.query);
-  const borough = parsed.borough ? `&borough=${parsed.borough}` : ``;
+  const borough = parsed.borough
+    ? `&borough=${
+        parsed.borough.charAt(0).toUpperCase() + parsed.borough.slice(1)
+      }`
+    : ``;
+  console.log(borough);
   useEffect(() => {
     fetch(
       `http://yurisweb422.herokuapp.com/api/restaurants?page=${page}&perPage=${perPage}${borough}`
@@ -23,7 +28,7 @@ export default function Restaurants(props) {
         setRestaurants(data);
       })
       .catch((err) => console.log(err));
-  }, [page]);
+  }, [page, props.query]);
 
   const previousPage = () => {
     if (page > 1) setPage(page - 1);
@@ -33,17 +38,22 @@ export default function Restaurants(props) {
   };
 
   if (!restaurants)
-    return <ListGroup.Item>Loading Restaurants...</ListGroup.Item>;
+    return (
+      <ListGroup.Item>
+        <Spinner animation="border" variant="info" />
+        Loading Restaurants...
+      </ListGroup.Item>
+    );
 
   if (restaurants.length == 0)
-    return <ListGroup.Item>Not Found.</ListGroup.Item>;
+    return <ListGroup.Item>No Restaurants Found.</ListGroup.Item>;
 
   return (
     <>
       <Card className="restaurantListHeader">
         <Card.Header>
           <h3>Restaurant List</h3>
-          Full list of restaurants you searched
+          Full list of restaurants. Optionally sorted by borough.
         </Card.Header>
       </Card>
       <ListGroup className="restaurantList" horizontal>
